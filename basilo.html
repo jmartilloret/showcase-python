@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-Based Python Projects - Jonathan Lloret</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Custom Properties (Variables) for Theming --- */
+        :root {
+            /* Default Theme: Basilo (Greens) */
+            --theme-bg: #f0fff0; /* Honeydew */
+            --theme-text: #384a38; /* Dark Green/Gray */
+            --theme-container-bg: #ffffff;
+            --theme-container-border: #c8e6c9; /* Pale Green */
+            --theme-header-border: #66bb6a; /* Medium Green */
+            --theme-h1-color: #006400; /* DarkGreen */
+            --theme-h2-color: #2e8b57; /* SeaGreen */
+            --theme-h3-border: #a5d6a7; /* Lighter Green */
+            --theme-link-color: #2e8b57; /* SeaGreen */
+            --theme-link-hover: #228b22; /* ForestGreen */
+            --theme-nav-bg: #e8f5e9; /* Very Light Green */
+            --theme-button-border: #a5d6a7; /* Light Green */
+            --theme-button-bg: #ffffff;
+            --theme-button-text: #388e3c; /* Medium Green */
+            --theme-button-hover-bg: #f1f8e9;
+            --theme-button-active-bg: #4CAF50; /* Leaf Green */
+            --theme-button-active-border: #388e3c;
+            --theme-button-active-text: #ffffff;
+            --theme-code-bg: #2e3440; /* Code editor background (consistent) */
+            --theme-code-text: #d8dee9; /* Code editor text (consistent) */
+            --theme-code-border: #556b2f; /* DarkOliveGreen */
+            --theme-output-bg: #faf8f0; /* Light Beige */
+            --theme-output-border: #d2b48c; /* Tan */
+            --theme-output-text: #5c4033; /* Dark Brown */
+            --theme-info-bg: #fff9c4; /* Light yellow */
+            --theme-info-border: #fff176; /* Yellow border */
+            --theme-info-text: #795548; /* Brown text */
+            --theme-footer-text: #6b8e6b; /* Grayish Green */
+            --theme-footer-border: #c8e6c9;
+            --theme-sticky-nav-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body.theme-bank {
+            /* Bank Theme: Light Blues */
+            --theme-bg: #e3f2fd;
+            --theme-text: #0d47a1; /* Dark Blue */
+            --theme-container-border: #bbdefb;
+            --theme-header-border: #42a5f5; /* Medium Blue */
+            --theme-h1-color: #0d47a1;
+            --theme-h2-color: #1976d2; /* Medium Blue */
+            --theme-h3-border: #90caf9;
+            --theme-link-color: #1976d2;
+            --theme-link-hover: #0d47a1;
+            --theme-nav-bg: #e3f2fd;
+            --theme-button-border: #90caf9;
+            --theme-button-text: #1565c0;
+            --theme-button-hover-bg: #e3f2fd;
+            --theme-button-active-bg: #2196F3; /* Blue */
+            --theme-button-active-border: #1976d2;
+            --theme-code-border: #1e3a5f; /* Dark Blueish */
+            --theme-output-bg: #e3f2fd;
+            --theme-output-border: #90caf9;
+            --theme-output-text: #0d47a1;
+            --theme-footer-text: #455a64; /* Blue Grey */
+            --theme-footer-border: #bbdefb;
+            --theme-sticky-nav-shadow: rgba(0, 0, 100, 0.1);
+        }
+
+        body.theme-slots {
+            /* Slot Machine Theme: Light Reds */
+            --theme-bg: #ffebee; /* Light Red/Pink */
+            --theme-text: #b71c1c; /* Dark Red */
+            --theme-container-border: #ffcdd2;
+            --theme-header-border: #ef5350; /* Medium Red */
+            --theme-h1-color: #c62828; /* Dark Red */
+            --theme-h2-color: #e53935; /* Medium Red */
+            --theme-h3-border: #ef9a9a;
+            --theme-link-color: #e53935;
+            --theme-link-hover: #c62828;
+            --theme-nav-bg: #ffebee;
+            --theme-button-border: #ef9a9a;
+            --theme-button-text: #d32f2f;
+            --theme-button-hover-bg: #ffebee;
+            --theme-button-active-bg: #f44336; /* Red */
+            --theme-button-active-border: #d32f2f;
+            --theme-code-border: #800000; /* Maroon */
+            --theme-output-bg: #ffebee;
+            --theme-output-border: #ef9a9a;
+            --theme-output-text: #b71c1c;
+            --theme-footer-text: #7f0000; /* Dark Red */
+            --theme-footer-border: #ffcdd2;
+            --theme-sticky-nav-shadow: rgba(100, 0, 0, 0.1);
+        }
+        /* --- End Theming Variables --- */
+
+        /* --- Apply Variables to Styles --- */
+        body {
+            font-family: 'Nunito', sans-serif; line-height: 1.7; margin: 0;
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
+            padding: 20px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        .project-content-wrapper {
+             background-color: var(--theme-container-bg);
+             padding: 30px; margin-bottom: 30px; border-radius: 10px;
+             box-shadow: 0 5px 15px rgba(0, 80, 0, 0.08);
+             border: 1px solid var(--theme-container-border);
+             min-height: 300px;
+             transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+        .project-content {
+            opacity: 0; visibility: hidden; pointer-events: none;
+            max-height: 0; overflow: hidden;
+            transition: opacity 0.3s ease-out, visibility 0s linear 0.3s, max-height 0s linear 0.3s;
+        }
+        .project-content.active {
+            opacity: 1; visibility: visible; pointer-events: auto;
+            max-height: 10000px;
+            transition: opacity 0.3s ease-in 0.3s, visibility 0s linear 0s, max-height 0s linear 0s;
+        }
+        h1, h2, h3 { font-weight: 700; }
+        h1 {
+            color: var(--theme-h1-color); font-size: 2.4em;
+            border-bottom: 3px solid var(--theme-header-border);
+            padding-bottom: 10px; margin-top: 0; margin-bottom: 25px;
+            transition: color 0.4s ease, border-color 0.4s ease;
+        }
+        h2 {
+            color: var(--theme-h2-color); font-size: 2em;
+            margin-top: 0; margin-bottom: 20px; border-bottom: none;
+            transition: color 0.4s ease;
+        }
+        h3 {
+            color: var(--theme-h1-color); font-size: 1.5em;
+            border-bottom: 2px solid var(--theme-h3-border);
+            padding-bottom: 8px; margin-top: 25px; margin-bottom: 15px;
+            transition: color 0.4s ease, border-color 0.4s ease;
+         }
+        nav { margin-bottom: 15px; padding: 10px 0; }
+        nav a {
+            color: var(--theme-link-color); text-decoration: none;
+            margin-right: 20px; font-weight: 600; transition: color 0.2s ease;
+        }
+        nav a:hover { color: var(--theme-link-hover); text-decoration: underline; }
+        .project-nav {
+            margin-bottom: 30px; padding: 10px;
+            background-color: var(--theme-nav-bg);
+            border-radius: 8px; text-align: center; position: sticky;
+            top: 0; z-index: 1000;
+            box-shadow: 0 2px 5px var(--theme-sticky-nav-shadow);
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .project-button {
+            padding: 10px 20px; margin: 5px; cursor: pointer;
+            border: 1px solid var(--theme-button-border);
+            background-color: var(--theme-button-bg);
+            color: var(--theme-button-text);
+            border-radius: 5px; font-weight: 600; font-size: 1em;
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .project-button:hover {
+            background-color: var(--theme-button-hover-bg);
+            border-color: var(--theme-button-active-border);
+        }
+        .project-button.active {
+            background-color: var(--theme-button-active-bg);
+            color: var(--theme-button-active-text);
+            border-color: var(--theme-button-active-border);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .python-code-display {
+            background-color: var(--theme-code-bg); color: var(--theme-code-text);
+            padding: 20px; border-radius: 8px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.95em; white-space: pre-wrap; word-wrap: break-word;
+            max-height: 500px; overflow-y: auto;
+            border: 1px solid var(--theme-code-border);
+            transition: border-color 0.4s ease;
+        }
+        .output-area {
+            background-color: var(--theme-output-bg); border: 1px solid var(--theme-output-border);
+            padding: 15px; min-height: 150px; max-height: 400px; overflow-y: auto;
+            white-space: pre-wrap; word-wrap: break-word;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            margin-top: 15px; color: var(--theme-output-text);
+            font-size: 0.9em; border-radius: 8px;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+        }
+        .runButton {
+            padding: 12px 25px; background-color: var(--theme-button-active-bg);
+            color: var(--theme-button-active-text); border: none;
+            border-radius: 5px; cursor: pointer; font-size: 1.1em;
+            font-weight: 700; margin-top: 20px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .runButton:hover {
+             background-color: var(--theme-button-active-border);
+             transform: translateY(-1px);
+        }
+        .runButton:active { transform: translateY(0px); box-shadow: none; }
+        .runButton:disabled { background-color: #9eab9e; cursor: not-allowed; transform: none; box-shadow: none; }
+        .runner-label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--theme-h1-color); font-size: 1.1em; transition: color 0.4s ease; }
+        .loading-message { display: inline-block; margin-left: 15px; font-style: italic; color: var(--theme-link-color); transition: color 0.4s ease;}
+        .info-note {
+            background-color: var(--theme-info-bg); border: 1px solid var(--theme-info-border);
+            color: var(--theme-info-text); padding: 15px;
+            border-radius: 5px; margin-top: 15px; font-size: 0.95em;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+        }
+        .runnable-python-code { display: none; }
+        footer {
+            text-align: center; margin-top: 40px; padding-top: 20px;
+            border-top: 1px solid var(--theme-footer-border); font-size: 0.9em;
+            color: var(--theme-footer-text);
+            transition: border-color 0.4s ease, color 0.4s ease;
+        }
+    </style>
+</head>
+<body class="theme-basilo"> <div class="container">
+        <header>
+            <h1>My Text-Based Python Projects</h1>
+            <p><em>A collection of Python projects. View the original code and run browser-friendly simulations!</em></p>
+        </header>
+
+        <nav>
+            <a href="../index.html">&larr; Back to Main Portfolio</a>
+        </nav>
+
+        <div class="project-nav">
+            <button class="project-button active" data-project="basilo">Basilo Plant Sim</button>
+            <button class="project-button" data-project="project2">Simple Bank App</button>
+            <button class="project-button" data-project="project3">Slot Machine Sim</button>
+        </div>
+
+        <main>
+            <div class="project-content-wrapper">
+                <div id="project-basilo" class="project-content active">
+                     <h2>Basilo: Plant Simulator</h2>
+                     <section id="descripcion-basilo">
+                        <h3>Project Description</h3>
+                        <p>This project is a simple simulation written in Python that models the growth of a plant named Basilo over 30 days. Each day, random weather conditions (sunny, cloudy, rainy) and wind are generated. These conditions, along with the soil moisture level, affect how many leaves and flowers Basilo has. The goal was to practice using the <code>random</code> module, conditional structures (<code>if/elif/else</code>), loops (<code>while</code>), and basic variable manipulation to create a small dynamic system. Run the code to see how Basilo fares!</p>
+                     </section>
+                     <section id="runner-section-basilo">
+                         <h3>Code and Interactive Execution</h3>
+                         <p>This is the source code for the Basilo simulation. Press the <strong>Run Code</strong> button to simulate the 30 days.</p>
+                         <label class="runner-label">Python Code (Basilo):</label>
+                         <div class="python-code-display" aria-live="polite">
+<pre><code id="code-display-basilo">import random
+
+daily_weather = ["sunny","partly cloudy","rainy","normal"]
+daily_wind = [0,1,2,3,4]
+leaves = 0; flowers = 0; day = 1; week = 7; month = 30
+soil = 3; MAX_SOIL = 20; MIN_SOIL = 1
+
+def run_simulation():
+    for i in range(1, leaves + 1): print(" " * (leaves - i), end=""); print("🌿 " * i)
+    if flowers > 0: print(" " * (leaves - 1), end=""); print("💮 " * flowers)
+    print(" " * (leaves - 1), end=""); print("🫠")
+    print("💩 " * soil)
+
+while day <= month:
+    for i in range(month):
+        if MIN_SOIL > soil: soil = 0
+        if MAX_SOIL < soil: soil = 20
+        wind = random.choice(daily_wind); weather = random. choice(daily_weather)
+        if soil < 3: leaves = leaves - 1; flowers = flowers - 1
+        if soil >= 28: flowers = flowers + 2
+        if weather == "sunny":
+            if wind < 4: print("Day", day," was a nice day, +2 leaves"); leaves += 2; flowers += 1; soil -= 1
+            else: leaves += 1; soil -= 3
+            print()
+        elif weather == "rainy":
+            if wind < 3: print("Day",day,"was rainy, Basilo lost 1 leaves"); leaves -=1; soil += 3; print()
+            else: print("Thunderstorm on day",day,", bad luck, - 2 leaves."); leaves -= 2; flowers -= 1; soil += 1
+        elif weather == "partly cloudy":
+            if wind < 3: leaves += 1
+            else: leaves -= 1
+        else: print("It was a boring day... nothing happened")
+        print("Today was",weather,", the wind was",wind,"and the soil is at",soil,".")
+        day += 1
+        if leaves <= 0: leaves = 1
+
+print(" BASILO WAS BORN! 🫠"); run_simulation(); print()
+print(f"Leaves =",abs(leaves), "Flowers =",abs(flowers),"soil =",abs(soil))
+print("Basilo is",day -1,"days old."); print("bye")
+</code></pre>
+                         </div>
+                         <textarea class="runnable-python-code">import random
+
+daily_weather = ["sunny","partly cloudy","rainy","normal"]
+daily_wind = [0,1,2,3,4]
+leaves = 0; flowers = 0; day = 1; week = 7; month = 30
+soil = 3; MAX_SOIL = 20; MIN_SOIL = 1
+
+def run_simulation():
+    for i in range(1, leaves + 1): print(" " * (leaves - i), end=""); print("🌿 " * i)
+    if flowers > 0: print(" " * (leaves - 1), end=""); print("💮 " * flowers)
+    print(" " * (leaves - 1), end=""); print("🫠")
+    print("💩 " * soil)
+
+while day <= month:
+    for i in range(month):
+        if MIN_SOIL > soil: soil = 0
+        if MAX_SOIL < soil: soil = 20
+        wind = random.choice(daily_wind); weather = random. choice(daily_weather)
+        if soil < 3: leaves = leaves - 1; flowers = flowers - 1
+        if soil >= 28: flowers = flowers + 2
+        if weather == "sunny":
+            if wind < 4: print("Day", day," was a nice day, +2 leaves"); leaves += 2; flowers += 1; soil -= 1
+            else: leaves += 1; soil -= 3
+            print()
+        elif weather == "rainy":
+            if wind < 3: print("Day",day,"was rainy, Basilo lost 1 leaves"); leaves -=1; soil += 3; print()
+            else: print("Thunderstorm on day",day,", bad luck, - 2 leaves."); leaves -= 2; flowers -= 1; soil += 1
+        elif weather == "partly cloudy":
+            if wind < 3: leaves += 1
+            else: leaves -= 1
+        else: print("It was a boring day... nothing happened")
+        print("Today was",weather,", the wind was",wind,"and the soil is at",soil,".")
+        day += 1
+        if leaves <= 0: leaves = 1
+
+print(" BASILO WAS BORN! 🫠"); run_simulation(); print()
+print(f"Leaves =",abs(leaves), "Flowers =",abs(flowers),"soil =",abs(soil))
+print("Basilo is",day -1,"days old."); print("bye")
+</textarea>
+                         <button class="runButton" type="button">Run Simulation (30 days)</button>
+                         <span class="loading-message" style="display: none;">Loading Pyodide and running...</span>
+                         <label class="runner-label">Simulation Output:</label>
+                         <pre class="output-area" aria-live="assertive"></pre>
+                     </section>
+                     <section id="aprendizaje-basilo">
+                        <h3>What I Learned</h3>
+                        <p>Developing the Basilo simulation helped reinforce my understanding of several key Python concepts:</p>
+                        <ul>
+                            <li>Using the <code>random</code> module (<code>random.choice</code>).</li>
+                            <li>Structuring loops (<code>while</code>, nested <code>for</code>).</li>
+                            <li>Implementing conditional logic (<code>if/elif/else</code>).</li>
+                            <li>Managing variables for state.</li>
+                            <li>Using <code>print()</code> for output.</li>
+                            <li>Defining functions (<code>run_simulation</code>).</li>
+                        </ul>
+                     </section>
+                </div>
+
+                <div id="project-project2" class="project-content">
+                     <h2>Project 2: Simple Bank App</h2>
+                     <section id="descripcion-project2">
+                         <h3>Project Description</h3>
+                         <p>This project is a basic command-line banking application simulation. It allows for checking balance, making deposits, and making withdrawals.</p>
+                     </section>
+                     <section id="runner-section-project2">
+                         <h3>Code and Interactive Execution</h3>
+                         <div class="info-note">
+                            ℹ️ **Note:** The code displayed below is the original version using `input()`. This won't run directly in the browser. Clicking "Run Code" executes a modified version that simulates bank actions automatically.
+                         </div>
+                         <label class="runner-label" style="margin-top: 20px;">Python Code (Bank App - Original):</label>
+                         <div class="python-code-display" aria-live="polite">
+<pre><code id="code-display-bank">def sum(a, b):
+    return(a + b)
+
+def resta(a, b):
+    return (a - b)
+
+def make_true(intention):
+    intention == 1
+    return intention
+
+def make_false(intention):
+    intention == 0
+    return intention
+
+def ask_intention(intention):
+    intention_check = input("Do you need any more help? (press y)")
+    if intention_check == "y" and intention == 0:
+        intention += 1
+    elif intention_check == "y" and intention == 1:
+        intention += 0
+    else:
+        intention == 0
+    return intention
+
+def ask_firstint(intention):
+    intention_check = input("Do you need any more help? (press y)")
+    if intention_check == "y":
+        intention == 1
+    else:
+        intention == 0
+    return intention
+
+def make_withdrawal():
+    global option, balance, intention, deposit, withdrawal
+    withdrawal = None
+    print("You sure? Please don't!")
+    if withdrawal == None:
+        withdrawal = int(input("How much 💵 do you want??"))
+    if withdrawal >= 0:
+        balance = resta(balance, withdrawal)
+        print("Cash is bad for you! Balance is now ",balance,".")
+
+def make_deposit():
+    global option, balance, intention, deposit
+    if deposit == None:
+        deposit = int(input("How much you wanna deposit:"))
+    if deposit >= 0:
+        print("Thank you for your depoasit! £", deposit," been added to your funds.")
+        balance = sum(balance, deposit)
+        print ("New balance is £", balance,".")
+    else:
+        print("Invalid Input, please try again:")
+
+def exit():
+    global intention
+    make_false(intention)
+    print("Adios!")
+
+def bank():
+    global option, balance, intention, deposit, withdrawal
+    withdrawal = None
+    deposit = None
+    option = 0
+
+    while True:
+        intention = input("Do you need any help? (enter y/n)")
+        if intention == "y":
+            deposit = None
+            withdrawal = None
+            intention = 1
+            bank_menu()
+        elif intention == "n":
+            print("closing bank")
+            break
+        else:
+            print("Invalid input. Try again.")
+
+def bank_menu():
+    global intention, option, balance, deposit
+    while True:
+        intention = 1
+        initial_amount = 100
+        balance = initial_amount
+        option = 0
+
+        while True:
+            print(    "1. Check balance💰")
+            print(    "2. Make a deposit🪙")
+            print(    "3. Withdraw money💵")
+            print(    "4. Exit🔒")
+            option = int(input("1. 💰 - 2. 🪙 - 3. 💵 - 4. 🔒"))
+            if option == 1:
+                print("Your balance is", balance,".")
+            elif option == 2:
+                print("Thank you.")
+                make_deposit()
+            elif option == 3:
+                make_withdrawal()
+            elif option == 4:
+                exit()
+                break
+            else:
+                print("WRONG! PLEASE TRY AGAIN")
+        break
+
+def main():
+    global balance
+    print("welcome to your bank")
+    bank()
+
+main()
+</code></pre>
+                         </div>
+                         <textarea class="runnable-python-code">import sys
+
+balance = 100.0
+print(f"Initial balance set to: £{balance:.2f}")
+
+def sum(a, b): return float(a) + float(b)
+def resta(a, b): return float(a) - float(b)
+
+def check_balance():
+    global balance
+    print(f"💰 Current Balance: £{balance:.2f}")
+
+def make_deposit(amount):
+    global balance
+    if amount > 0:
+        print(f"🪙 Depositing: £{amount:.2f}")
+        balance = sum(balance, amount)
+        print(f"   New balance is £{balance:.2f}")
+    else:
+        print(f"   Invalid deposit amount: £{amount:.2f}. Must be positive.")
+
+def make_withdrawal(amount):
+    global balance
+    if amount > 0 and amount <= balance:
+        print(f"💵 Withdrawing: £{amount:.2f}")
+        balance = resta(balance, amount)
+        print(f"   New balance is £{balance:.2f}")
+    elif amount <= 0:
+        print(f"   Invalid withdrawal amount: £{amount:.2f}. Must be positive.")
+    else:
+        print(f"   Withdrawal failed: Insufficient funds (£{balance:.2f}) for withdrawal of £{amount:.2f}.")
+
+def simulate_bank_session():
+    print("\n--- Starting Bank Simulation ---")
+    print("Welcome to the simulated bank!")
+    print("\nAction 1: Checking balance...")
+    check_balance()
+    deposit_amount = 55.75
+    print(f"\nAction 2: Depositing £{deposit_amount:.2f}...")
+    make_deposit(deposit_amount)
+    withdrawal_amount = 30.50
+    print(f"\nAction 3: Withdrawing £{withdrawal_amount:.2f}...")
+    make_withdrawal(withdrawal_amount)
+    withdrawal_amount_too_much = 500.00
+    print(f"\nAction 4: Attempting to withdraw £{withdrawal_amount_too_much:.2f}...")
+    make_withdrawal(withdrawal_amount_too_much)
+    print("\nAction 5: Checking final balance...")
+    check_balance()
+    print("\n--- Simulation Finished ---")
+    print("Goodbye!")
+
+simulate_bank_session()
+</textarea>
+                         <button class="runButton" type="button">Run Bank Simulation</button>
+                         <span class="loading-message" style="display: none;">Loading Pyodide and running...</span>
+                         <label class="runner-label">Simulation Output:</label>
+                         <pre class="output-area" aria-live="assertive"></pre>
+                     </section>
+                     <section id="aprendizaje-project2">
+                        <h3>What I Learned</h3>
+                        <p>This project involved creating a simple text-based bank application. Key concepts practiced include:</p>
+                        <ul>
+                            <li>Defining functions for specific actions (deposit, withdraw, check balance).</li>
+                            <li>Using conditional statements (`if/elif/else`) for validation (e.g., checking for positive amounts, sufficient funds).</li>
+                            <li>Basic arithmetic operations.</li>
+                            <li>Managing application state using variables (like `balance`).</li>
+                            <li>(In original version) Handling user input via `input()` and controlling program flow with loops and menus.</li>
+                            <li>(In this modified version) Understanding the limitations of `input()` in browser environments and simulating program flow.</li>
+                            <li>Using global variables (and understanding potential drawbacks).</li>
+                        </ul>
+                     </section>
+                </div>
+
+                <div id="project-project3" class="project-content">
+                     <h2>Project 3: Slot Machine Sim</h2>
+                     <section id="descripcion-project3">
+                         <h3>Project Description</h3>
+                         <p>This project simulates a simple text-based slot machine game. You start with a balance, place bets, and spin the reels (represented by emojis). Winning combinations give multipliers on your bet.</p>
+                     </section>
+                     <section id="runner-section-project3">
+                          <h3>Code and Interactive Execution</h3>
+                         <div class="info-note">
+                            ℹ️ **Note:** The code displayed below is the original version using `input()`. This won't run directly in the browser. Clicking "Run Code" executes a modified version that simulates a few spins automatically.
+                         </div>
+                         <label class="runner-label" style="margin-top: 20px;">Python Code (Slot Machine - Original):</label>
+                         <div class="python-code-display" aria-live="polite">
+<pre><code id="code-display-slot">import random
+
+def get_row():
+    symbols = ['🍒','💩','🍏','🔔','💰']
+    return [random.choice(symbols) for _ in range(3)]
+
+def make_deposit():
+    while True:
+        deposit = input("Enter amount")
+        if deposit.isdigit() and int(deposit) > 0:
+            break
+        if not deposit.isdigit():
+            print("enter a valid amount")
+            continue
+        else:
+            print("enter a valid amount")
+            continue
+    return deposit
+
+def place_bet():
+    while True:
+        bet_amount = input("Enter amount")
+        if not bet_amount.isdigit():
+            print("enter a valid amount")
+            continue
+        if bet_amount <= "0":
+            print("enter a valid amount")
+            continue
+        else:
+            break
+    return bet_amount
+
+def run_game():
+    results = get_row()
+    mult_by = 1
+    match_count = 1
+    if results[1] == results[0]: match_count += 1
+    if results[1] == results[2]: match_count += 1
+
+    if match_count >= 2:
+        symbol = results[1]
+        if match_count == 3:
+            if symbol == "💩": print("JACKPOT! 💩💩💩 You won the shit prize!"); return 2.0
+            elif symbol == "🍒": print("JACKPOT! 🍒🍒🍒 You won big!"); return 3.0
+            elif symbol == "🍏": print("JACKPOT! 🍏🍏🍏 Amazing win!"); return 4.0
+            elif symbol == "🔔": print("JACKPOT! 🔔🔔🔔 Huge win!"); return 5.0
+            elif symbol == "💰": print("MEGA JACKPOT! 💰💰💰 YOU'RE RICH!"); return 10.0
+        else:
+            if symbol == "💩": print("Winner! 💩💩 You got the small shit prize!"); return 1.1
+            elif symbol == "🍒": print("Winner! 🍒🍒 Nice pair!"); return 1.5
+            elif symbol == "🍏": print("Winner! 🍏🍏 Good pair!"); return 1.8
+            elif symbol == "🔔": print("Winner! 🔔🔔 Great pair!"); return 2.0
+            elif symbol == "💰": print("Winner! 💰💰 Lucky pair!"); return 3.0
+    else:
+        print("You lost! No matches")
+        print("Results:", results)
+        return 0
+
+def intention():
+    wanna_play = input("press any key to continue, press (n) to exit")
+    if wanna_play == "n": return False
+    else: return True
+
+def back_tomenu():
+    wanna_play = input("Press (Enter) to go again, press (n) to go back to menu")
+    if wanna_play == "n": return False
+    else: return True
+
+def main():
+    global balance, should_run
+    should_run = True
+    balance = 50
+    print("Welcome to ludopathy")
+    print("Current balance = £", balance)
+    print("Symbols 🍒1.5x 💩1.1x 🍏2x 🔔3x 💰5x")
+    print("get 3 in a row to win")
+
+    while should_run == True:
+        option = input("Enter (1) to make a deposit, enter (2) to place a bet")
+        if not option.isdigit():
+            print("Invalid input")
+            continue
+
+        if option == "1":
+            deposit = make_deposit()
+            deposit = int(deposit)
+            print("Deposit of £",deposit,"added to your funds")
+            balance = balance + deposit
+            print("Balance: £",balance)
+        elif option == "2":
+            go_again = True
+            while go_again == True:
+                bet = int(place_bet())
+                if bet > balance:
+                    print("Insufficient funds")
+                else:
+                    print("you placed a bet of £",bet,".")
+                    balance = balance - bet
+                    print("Balance: £",balance)
+                    print("GOOD LUCK!:")
+                    winning_x = run_game()
+                    winnings = bet * winning_x
+                    if winnings > 0:
+                         print(f"You won £{winnings:.2f} back!")
+                         balance += winnings
+                    print("Current balance: £", balance)
+                    go_again = back_tomenu()
+        elif option == "2" and balance < 0:
+            print("please make a deposit")
+        else:
+            print("wrong number, try (1) or (2)")
+            continue
+        should_run = intention()
+    else:
+        print("Bye, ludoopath")
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+                         </div>
+                         <textarea class="runnable-python-code">import random
+
+SYMBOLS = ['🍒','💩','🍏','🔔','💰']
+PAYOUTS_3 = {'🍒': 3.0, '💩': 2.0, '🍏': 4.0, '🔔': 5.0, '💰': 10.0}
+PAYOUTS_2 = {'🍒': 1.5, '💩': 1.1, '🍏': 1.8, '🔔': 2.0, '💰': 3.0}
+
+def get_row():
+    symbols_local = ['🍒','💩','🍏','🔔','💰']
+    return [random.choice(symbols_local) for _ in range(3)]
+
+def check_win(results):
+    print("Spin Results:", " | ".join(results))
+    if results[0] == results[1] == results[2]:
+        symbol = results[0]
+        multiplier = PAYOUTS_3.get(symbol, 0)
+        if multiplier > 0:
+            if symbol == '💰': print(f"MEGA JACKPOT! {symbol}{symbol}{symbol} YOU'RE RICH!")
+            elif symbol == '💩': print(f"JACKPOT! {symbol}{symbol}{symbol} You won the... prize!")
+            else: print(f"JACKPOT! {symbol}{symbol}{symbol} Amazing win!")
+            return multiplier
+        else: return 0
+    winning_symbol = None
+    if results[0] == results[1]: winning_symbol = results[0]
+    elif results[1] == results[2]: winning_symbol = results[1]
+    elif results[0] == results[2]: winning_symbol = results[0]
+    if winning_symbol:
+        multiplier = PAYOUTS_2.get(winning_symbol, 0)
+        if multiplier > 0: print(f"Winner! {winning_symbol}{winning_symbol} Good pair!"); return multiplier
+        else: return 0
+    print("You lost! No matches.")
+    return 0
+
+def simulate_slot_session():
+    global balance
+    balance = 50.0
+    print("--- Starting Slot Machine Simulation ---")
+    print("Welcome to simulated ludopathy!")
+    print(f"Starting Balance = £{balance:.2f}")
+    print(f"Symbols & 3-Match Payouts: 🍒x{PAYOUTS_3['🍒']:.1f} 💩x{PAYOUTS_3['💩']:.1f} 🍏x{PAYOUTS_3['🍏']:.1f} 🔔x{PAYOUTS_3['🔔']:.1f} 💰x{PAYOUTS_3['💰']:.1f}")
+    print(f"Symbols & 2-Match Payouts: 🍒x{PAYOUTS_2['🍒']:.1f} 💩x{PAYOUTS_2['💩']:.1f} 🍏x{PAYOUTS_2['🍏']:.1f} 🔔x{PAYOUTS_2['🔔']:.1f} 💰x{PAYOUTS_2['💰']:.1f}")
+    print("-" * 40)
+
+    bets = [5, 10, 2, 20, 15]
+    spin_count = 0
+
+    for bet in bets:
+        spin_count += 1
+        print(f"\n--- Spin {spin_count} ---")
+        print(f"Current Balance: £{balance:.2f}")
+        if bet <= 0: print(f"Simulated bet £{bet:.2f} is invalid. Skipping spin."); continue
+        if bet > balance: print(f"Simulated bet £{bet:.2f} is too high for balance £{balance:.2f}. Skipping spin."); break
+
+        print(f"Placing a bet of £{bet:.2f}.")
+        balance -= bet
+        print(f"Balance after bet: £{balance:.2f}")
+        print("Spinning the reels... GOOD LUCK!")
+        multiplier = check_win(get_row())
+        winnings = bet * multiplier
+        if winnings > 0:
+            print(f"You won £{winnings:.2f}!")
+            balance += winnings
+        else: print("Better luck next time!")
+        print(f"End of Spin {spin_count} Balance: £{balance:.2f}")
+        print("-" * 20)
+        if balance <= 0: print("\nGame Over: You ran out of money!"); break
+
+    print("\n--- Simulation Finished ---")
+    print(f"Final Balance: £{balance:.2f}")
+    print("Thanks for playing (the simulation)!")
+
+if __name__ == '__main__':
+    simulate_slot_session()
+</textarea>
+                         <button class="runButton" type="button">Run Slot Simulation</button>
+                         <span class="loading-message" style="display: none;">Loading Pyodide and running...</span>
+                         <label class="runner-label">Simulation Output:</label>
+                         <pre class="output-area" aria-live="assertive"></pre>
+                     </section>
+                     <section id="aprendizaje-project3">
+                        <h3>What I Learned</h3>
+                        <p>This project involved simulating a slot machine game. Key concepts involved were:</p>
+                        <ul>
+                            <li>Using `random.choice` to simulate random outcomes (the slot symbols).</li>
+                            <li>Working with lists to represent the slot machine reels/rows.</li>
+                            <li>Implementing game logic with conditional statements (`if/elif/else`) to check for winning combinations.</li>
+                            <li>Using dictionaries (`PAYOUTS_3`, `PAYOUTS_2`) to store and look up payout multipliers based on symbols.</li>
+                            <li>Managing game state (like the player's `balance`).</li>
+                            <li>Structuring the game loop (in the original version, handling bets and re-spins based on user input).</li>
+                            <li>(In this modified version) Adapting code with user input (`input()`) to run in a browser environment by simulating actions.</li>
+                            <li>Formatting output using f-strings to display game information clearly.</li>
+                        </ul>
+                     </section>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="year"></span> Jonathan Lloret - All rights reserved.</p>
+            <script> document.getElementById('year').textContent = new Date().getFullYear(); </script>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- JS unchanged ---
+        const loadingMsgElements = document.querySelectorAll('.loading-message'); const runButtons = document.querySelectorAll('.runButton'); let pyodideInstance = null;
+        function addToOutput(message) { const activeProject = document.querySelector('.project-content.active'); if (activeProject) { const outputArea = activeProject.querySelector('.output-area'); if (outputArea) { const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;"); outputArea.textContent += sanitizedMessage + '\n'; outputArea.scrollTop = outputArea.scrollHeight; } } }
+        function clearOutput() { const activeProject = document.querySelector('.project-content.active'); if (activeProject) { const outputArea = activeProject.querySelector('.output-area'); if (outputArea) { outputArea.textContent = ''; } } }
+        async function loadPyodideAndSetup() { const initialOutputArea = document.querySelector('#project-basilo .output-area'); if(initialOutputArea) initialOutputArea.textContent = "Initializing Python environment (Pyodide)... This may take a moment.\n"; runButtons.forEach(button => button.disabled = true); try { pyodideInstance = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/" }); pyodideInstance.setStdout({ batched: addToOutput }); pyodideInstance.setStderr({ batched: (errorMsg) => addToOutput(`ERROR: ${errorMsg}`) }); addToOutput("✅ Python environment ready."); } catch (error) { console.error("Error loading Pyodide:", error); addToOutput(`❌ Critical Error: Could not load Python environment. ${error.message}`); const activeLoadingMsg = document.querySelector('.project-content.active .loading-message'); if(activeLoadingMsg) { activeLoadingMsg.textContent = "Loading Error."; activeLoadingMsg.style.display = 'inline'; } return; } finally { if (pyodideInstance) { const activeRunButton = document.querySelector('.project-content.active .runButton'); if(activeRunButton) activeRunButton.disabled = false; } } }
+        loadPyodideAndSetup();
+        const projectNav = document.querySelector('.project-nav'); const projectButtons = projectNav.querySelectorAll('.project-button'); const projectContents = document.querySelectorAll('.project-content'); const bodyEl = document.body;
+        projectNav.addEventListener('click', (event) => { if (event.target.classList.contains('project-button')) { const targetProject = event.target.dataset.project; projectButtons.forEach(button => { button.classList.remove('active'); if (button.dataset.project === targetProject) button.classList.add('active'); }); bodyEl.classList.remove('theme-basilo', 'theme-bank', 'theme-slots'); if (targetProject === 'project2') { bodyEl.classList.add('theme-bank'); } else if (targetProject === 'project3') { bodyEl.classList.add('theme-slots'); } else { bodyEl.classList.add('theme-basilo'); } setTimeout(() => { projectContents.forEach(content => { const isActive = content.id === `project-${targetProject}`; const runButton = content.querySelector('.runButton'); const loadingMsg = content.querySelector('.loading-message'); if (isActive) { content.classList.add('active'); const outputArea = content.querySelector('.output-area'); if(outputArea) outputArea.textContent = ''; if(runButton) runButton.disabled = !pyodideInstance; if(loadingMsg) loadingMsg.style.display = 'none'; } else { content.classList.remove('active'); if(runButton) runButton.disabled = true; if(loadingMsg) loadingMsg.style.display = 'none'; } }); }, 50); } });
+        document.querySelector('main').addEventListener('click', async (event) => { if (event.target.classList.contains('runButton') && event.target.closest('.project-content.active')) { const runButton = event.target; const activeProject = runButton.closest('.project-content.active'); const runnableCodeElement = activeProject.querySelector('.runnable-python-code'); const outputArea = activeProject.querySelector('.output-area'); const loadingMsg = activeProject.querySelector('.loading-message'); if (!pyodideInstance) { addToOutput("⚠️ Please wait for Pyodide to finish loading before running."); return; } if (!runnableCodeElement || !outputArea || !loadingMsg) { console.error("Run button clicked, but necessary elements (runnable code, output, loading) not found."); return; } outputArea.textContent = `🚀 Running ${activeProject.querySelector('h2').textContent} Simulation...\n` + "-".repeat(40) + "\n"; runButton.disabled = true; loadingMsg.style.display = 'inline'; loadingMsg.textContent = "Running..."; try { const pythonCode = runnableCodeElement.value; await pyodideInstance.runPythonAsync(pythonCode); addToOutput("-".repeat(40) + "\n✅ Execution finished."); } catch (error) { console.error("Error during Python code execution:", error); addToOutput(`❌ Execution Error: ${error.message}`); if (!error.message.includes("Traceback")) { addToOutput("An unexpected script error occurred."); } } finally { runButton.disabled = false; loadingMsg.style.display = 'none'; loadingMsg.textContent = "Loading Pyodide and running..."; } } });
+    </script>
+
+</body>
+</html>
